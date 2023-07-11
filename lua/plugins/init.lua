@@ -14,6 +14,8 @@ return {
     -- comment
     {
         'terrortylor/nvim-comment',
+        lazy = true,
+        event = { "CursorHold", "CursorHoldI" },
         config = function()
             require('nvim_comment').setup({
                 marker_padding = true, -- 空格
@@ -25,6 +27,8 @@ return {
     },
     {
         'lukas-reineke/indent-blankline.nvim',
+        lazy = true,
+        event = "BufReadPost",
         config = function ()
             require("indent_blankline").setup ({})
         end
@@ -94,6 +98,23 @@ return {
             let g:VM_maps["Select Cursor Down"] = '<M-j>'   
             let g:VM_maps["Select Cursor Up"]   = '<M-k>'     
             ]])
+        end
+    },
+    {
+        'j-hui/fidget.nvim',
+        lazy = true,
+        branch = "legacy",
+        event = "LspAttach",
+        config = function ()
+            require("fidget").setup({
+                window = { blend = 0 },
+                sources = {
+                    ["null-ls"] = { ignore = true },
+                },
+                fmt = {
+                    max_messages = 3, -- The maximum number of messages stacked at any give time
+                },
+            })
         end
     }
 }

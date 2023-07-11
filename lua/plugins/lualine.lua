@@ -25,6 +25,8 @@ vim.api.nvim_create_autocmd({ "ChanOpen", "BufEnter" }, {
 
 return {
     'nvim-lualine/lualine.nvim',
+    lazy = true,
+	event = { "BufReadPost", "BufAdd", "BufNewFile" },
     config = function()
         require('lualine').setup({
             options = {
@@ -95,7 +97,7 @@ return {
                         },
                     },
                 },
-                lualine_b = { 'diagnostics' },
+                lualine_b = {},
                 lualine_c = {},
                 lualine_x = {},
                 lualine_y = {},

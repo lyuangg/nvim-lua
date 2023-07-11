@@ -1,6 +1,8 @@
 return {
     {
         'lewis6991/gitsigns.nvim',
+        lazy = true,
+        event = { "CursorHold", "CursorHoldI" },
         config = function ()
             require('gitsigns').setup({
                 signs = {
@@ -47,6 +49,8 @@ return {
     },
     {
         'sindrets/diffview.nvim',
+        azy = true,
+        cmd = { "DiffviewOpen", "DiffviewClose" },
         dependencies = {
             'nvim-lua/plenary.nvim'
         },

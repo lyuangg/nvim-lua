@@ -1,5 +1,7 @@
 return {
     'epwalsh/obsidian.nvim',
+    lazy = true,
+    event = { "BufReadPre /Users/yuan/Library/Mobile Documents/iCloud~md~obsidian/Documents/yuan/**.md" },
     config = function ()
         require("obsidian").setup({
             dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/yuan",

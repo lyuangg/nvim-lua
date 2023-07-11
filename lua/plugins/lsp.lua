@@ -1,7 +1,8 @@
 return {
     {
         'neovim/nvim-lspconfig',
-        event = { "BufReadPre", "BufNewFile" },
+        lazy = true,
+        event = {"BufReadPre", "BufReadPost", "BufAdd", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
@@ -129,6 +130,8 @@ return {
    },
    {
         "glepnir/lspsaga.nvim",
+        lazy = true,
+        event = "LspAttach",
         config = function()
             require("lspsaga").setup({
                 ui = {

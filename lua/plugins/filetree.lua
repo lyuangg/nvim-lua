@@ -1,5 +1,12 @@
 return {
    'nvim-tree/nvim-tree.lua',
+    cmd = {
+		"NvimTreeToggle",
+		"NvimTreeOpen",
+		"NvimTreeFindFile",
+		"NvimTreeFindFileToggle",
+		"NvimTreeRefresh",
+	},
    config = function ()
         require("nvim-tree").setup({
             disable_netrw = true,

@@ -49,13 +49,22 @@ return {
     },
     {
         'sindrets/diffview.nvim',
-        azy = true,
+        lazy = true,
         cmd = { "DiffviewOpen", "DiffviewClose" },
         dependencies = {
             'nvim-lua/plenary.nvim'
         },
         config = function ()
             require('diffview').setup({})
+        end
+    },
+    {
+        'NeogitOrg/neogit',
+        lazy = true,
+        cmd = { "Neogit" },
+        dependencies = 'nvim-lua/plenary.nvim',
+        config = function ()
+           require('neogit').setup({})
         end
     }
 }

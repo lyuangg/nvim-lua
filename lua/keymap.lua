@@ -9,7 +9,10 @@ vim.keymap.set('n', '<leader>oo', ':AerialOpen<cr>', { noremap=true, silent=true
 
 -- telescope
 vim.keymap.set('n', '<leader>ff', function() require'telescope.builtin'.find_files{} end, { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>fg', function() require'telescope.builtin'.live_grep{} end, { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>fg', function() require'telescope.builtin'.live_grep{} end, { noremap=true, silent=true })
+vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
+vim.keymap.set("n", "<leader>ft", ":Telescope<CR>")
+
 
 
 -- comment
@@ -22,6 +25,8 @@ vim.keymap.set("n", '<leader>gq', ":DiffviewClose<cr>", {noremap= true, silent=t
 vim.keymap.set("n", '<leader>gH', ":DiffviewFileHistory<cr>", {noremap= true, silent=true })
 vim.keymap.set("n", '<leader>gn', ":Gitsigns next_hunk<cr>", {noremap= true, silent=true })
 vim.keymap.set("n", '<leader>gp', ":Gitsigns prev_hunk<cr>", {noremap= true, silent=true })
+vim.keymap.set("n", '<leader>gg', ":Neogit<cr>", {noremap= true, silent=true })
+vim.keymap.set("n", '<leader>gc', ":Neogit commit<cr>", {noremap= true, silent=true })
 
 -- buffer
 vim.keymap.set('n', '<leader>1', ':LualineBuffersJump! 1<cr>', { noremap=true, silent=true })

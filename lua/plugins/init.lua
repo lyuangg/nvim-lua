@@ -45,6 +45,8 @@ return {
     },
     {
         "folke/todo-comments.nvim",
+        lazy = true,
+        event = { "CursorHold", "CursorHoldI" },
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
             -- your configuration comes here
@@ -54,6 +56,8 @@ return {
     },
     {
         "gbprod/substitute.nvim",
+        lazy = true,
+        event = "VeryLazy",
         config = function()
             require("substitute").setup({
             -- your configuration comes here
@@ -74,6 +78,7 @@ return {
     },
     {
         'numToStr/Navigator.nvim',
+        cmd = { 'NavigatorUp', 'NavigatorDown', 'NavigatorLeft', 'NavigatorRight'},
         config = function()
             require('Navigator').setup()
         end
@@ -92,6 +97,8 @@ return {
     },
     {
         'mg979/vim-visual-multi',
+        lazy = true,
+        event = { "CursorHold", "CursorHoldI" },
         init = function()
             vim.cmd([[
             let g:VM_maps                       = {}

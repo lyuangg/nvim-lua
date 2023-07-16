@@ -116,8 +116,8 @@ vim.api.nvim_set_keymap("n", "<Leader>w", ":w<CR>", { noremap = true, silent = t
 vim.api.nvim_set_keymap("i", "jj", "<esc>", { noremap = true, silent = true }) -- 映射jj为<esc>
 
 -- buffers
-vim.api.nvim_set_keymap("n", "<Leader>x", ":bp<CR>:bd #<CR>", { noremap = true, silent = true }) -- 映射<Leader>x为:bp<CR>:bd #<CR>
-vim.api.nvim_set_keymap("n", "<Leader>X", ":bd!<CR>", { noremap = true, silent = true }) -- 映射<Leader>X为:bd!<CR>
+vim.api.nvim_set_keymap("n", "<Leader>bx", ":bp<CR>:bd #<CR>", { noremap = true, silent = true }) 
+vim.api.nvim_set_keymap("n", "<Leader>bX", ":bd!<CR>", { noremap = true, silent = true }) 
 vim.api.nvim_set_keymap("n", "<Leader>bb", "<C-6>", { noremap = true, silent = true }) -- 映射<Leader>bb为<C-6>
 vim.api.nvim_set_keymap("n", "<Leader>bo", ":%bd<CR>:e#<CR>:bd#<CR>", { noremap = true, silent = true }) -- 映射<Leader>bo为:%bd<CR>:e#<CR>:bd#<CR>
 vim.api.nvim_set_keymap("n", "<Leader>bn", ":ene<CR>", { noremap = true, silent = true }) -- 映射<Leader>bn为:ene<CR>

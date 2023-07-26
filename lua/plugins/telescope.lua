@@ -12,6 +12,10 @@ return {
             defaults = {
             },
             pickers = {
+                find_files = {
+                    layout_strategy = 'vertical',
+                    previewer = false,
+                }
             },
             extensions = {
                 live_grep_args = {

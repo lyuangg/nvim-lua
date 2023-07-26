@@ -2,7 +2,7 @@
 vim.opt.number = true -- 显示行号
 vim.opt.relativenumber = true -- 显示相对行号
 vim.opt.cursorline = true -- 高亮当前行
-vim.opt.wrap = false -- 自动换行
+vim.opt.wrap = true -- 自动换行
 vim.opt.linebreak = true -- 不在单词内换行
 vim.opt.wrapmargin = 2 -- 指定折行处与编辑窗口的右边缘之间空出的字符数。
 vim.opt.scrolloff = 7 -- 保持在光标上下最少行数
@@ -57,8 +57,8 @@ vim.opt.grepprg = "grep -rn $* --exclude-dir=.git" -- grep 设置
 vim.opt.path:append("**") -- 设置文件搜索路径
 vim.opt.suffixesadd:append(".php", ".js", ".vue", ".css", ".go") -- 设置文件搜索后缀
 
-vim.api.nvim_set_keymap("x", "*", [[:<C-u>call VSetSearch('/')<CR>/<C-R>=@/<CR><CR>]], { noremap = true, silent = true }) -- 映射*为Visual模式下的搜索/
-vim.api.nvim_set_keymap("x", "#", [[:<C-u>call VSetSearch('?')<CR>?<C-R>=@/<CR><CR>]], { noremap = true, silent = true }) -- 映射#为Visual模式下的搜索?
+vim.api.nvim_set_keymap("x", "*", [[:<C-u>lua VSetSearch('/')<CR>/<C-R>=@/<CR><CR>]], { noremap = true, silent = true }) -- 映射*为Visual模式下的搜索/
+vim.api.nvim_set_keymap("x", "#", [[:<C-u>lua VSetSearch('?')<CR>?<C-R>=@/<CR><CR>]], { noremap = true, silent = true }) -- 映射#为Visual模式下的搜索?
  
 function VSetSearch(cmdtype)
   local temp = vim.fn.getreg("s")
@@ -142,7 +142,7 @@ vim.g.startify_lists = {
     { type = 'bookmarks', header = {'   Bookmarks'}    },
     { type = 'commands',  header = {'   Commands'}     },
 } -- 设置Startify的列表类型和标题
-vim.g.startify_bookmarks = { {o = '~/tmpfiles/t.md'}, '~/.zshrc', '~/.tmux.conf' } -- 设置Startify的书签
+vim.g.startify_bookmarks = { {o = '/Users/yuan/tmpfiles/t.md'}, '/Users/yuan/.zshrc', '/Users/yuan/.tmux.conf' } -- 设置Startify的书签
 vim.g.startify_files_number = 5 -- 设置Startify的文件数量
 vim.g.startify_session_autoload = 1 -- 设置Startify的自动加载会话
 vim.g.startify_session_persistence = 1 -- 设置Startify的会话持久化
@@ -168,3 +168,11 @@ vim.cmd('autocmd InsertLeave * :set rnu')
 vim.g.VM_maps = {}
 vim.g.VM_maps["Select Cursor Down"] = '<M-j>'
 vim.g.VM_maps["Select Cursor Up"]   = '<M-k>'
+
+-- 多次粘贴
+vim.api.nvim_set_keymap("x", "p", '"0p', { noremap = true })
+
+-- quicktype
+vim.keymap.set("v", "<leader>tt", function()
+    return " !quicktype -l go --just-types -t " .. vim.fn.input("type name: ", "T1") .. " --field-tags " .. vim.fn.input("tag name: ", "json") .. "<cr>"
+end, { expr = true })

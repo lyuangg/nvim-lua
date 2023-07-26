@@ -2,20 +2,21 @@ return {
     {
         'neovim/nvim-lspconfig',
         lazy = true,
-        event = {"BufReadPre", "BufReadPost", "BufAdd", "BufNewFile" },
+        event = { "BufReadPre", "BufReadPost", "BufAdd", "BufNewFile" },
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
             'hrsh7th/cmp-nvim-lsp',
         },
-        config = function ()
+        config = function()
             -- 语言服务
             -- 'sumneko_lua'
             -- intelephense
-            local servers = {'lua_ls', 'gopls', 'pyright', 'tsserver', 'html', 'eslint', 'jsonls', 'cssls', 'lemminx', 'yamlls', 'emmet_ls', 'marksman', 'intelephense', 'volar', 'bashls'}
+            local servers = { 'lua_ls', 'gopls', 'pyright', 'tsserver', 'html', 'eslint', 'jsonls', 'cssls', 'lemminx',
+                'yamlls', 'emmet_ls', 'marksman', 'intelephense', 'volar', 'bashls' }
             require("mason-lspconfig").setup({
-            -- 确保安装，根据需要填写
-            ensure_installed = {}
+                -- 确保安装，根据需要填写
+                ensure_installed = {}
             })
 
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -23,9 +24,8 @@ return {
 
             -- on_attach 高亮
             local on_attach = function(client, bufnr)
-
                 if client.server_capabilities.documentHighlightProvider then
-                vim.cmd [[
+                    vim.cmd [[
                     hi! LspReferenceRead cterm=bold ctermbg=red guibg=Grey
                     hi! LspReferenceText cterm=bold ctermbg=red guibg=Grey
                     hi! LspReferenceWrite cterm=bold ctermbg=red guibg=Grey
@@ -54,22 +54,39 @@ return {
 
                 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
                     vim.lsp.handlers.hover,
-                    {border = 'rounded'}
+                    { border = 'rounded' }
                 )
 
                 vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
                     vim.lsp.handlers.signature_help,
-                    {border = 'rounded'}
+                    { border = 'rounded' }
                 )
 
-
+                vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+                    vim.lsp.diagnostic.on_publish_diagnostics, {
+                        -- Enable underline, use default values
+                        underline = false,
+                        -- Enable virtual text, override spacing to 4
+                        virtual_text = {
+                            spacing = 4,
+                        },
+                        -- Use a function to dynamically turn signs off
+                        -- and on, using buffer local variables
+                        signs = function(namespace, bufnr)
+                            return vim.b[bufnr].show_signs == true
+                        end,
+                        -- Disable a feature
+                        update_in_insert = false,
+                    }
+                )
+                -- vim.diagnostic.disable()
             end
 
             for _, lsp in ipairs(servers) do
-            lspconfig[lsp].setup {
-                on_attach = on_attach,
-                capabilities = capabilities,
-            }
+                lspconfig[lsp].setup {
+                    on_attach = on_attach,
+                    capabilities = capabilities,
+                }
             end
 
             require('lspconfig').lua_ls.setup {
@@ -85,24 +102,27 @@ return {
             }
 
             -- gopls 配置
-            require('lspconfig').gopls.setup{
-            on_attach = on_attach,
-            capabilities = capabilities,
-            cmd = {'gopls'},
-            settings = {
-                gopls = {
-                analyses = {
-                    nilness = true,
-                    unusedparams = true,
-                    unusedwrite = true,
-                    useany = true,
+            require('lspconfig').gopls.setup {
+                on_attach = on_attach,
+                capabilities = capabilities,
+                cmd = { 'gopls' },
+                filetypes = { "go", "gomod" },
+                root_dir = require("lspconfig/util").root_pattern("go.work", "go.mod", ".git"),
+                single_file_support = true,
+                settings = {
+                    gopls = {
+                        -- analyses = {
+                        --     -- nilness = true,
+                        --     -- unusedparams = true,
+                        --     -- unusedwrite = true,
+                        --     -- useany = true,
+                        -- },
+                        experimentalPostfixCompletions = true, -- 自动完成
+                        gofumpt = true,                        -- 格式化
+                        staticcheck = true,
+                        usePlaceholders = true,
+                    },
                 },
-                experimentalPostfixCompletions = true,
-                -- gofumpt = true,
-                staticcheck = true,
-                usePlaceholders = true,
-                },
-            },
             }
 
 
@@ -113,13 +133,19 @@ return {
                 autocmd BufWritePre *.go lua vim.lsp.buf.format()
             augroup end
             ]], false)
-
+            -- imports
+            vim.api.nvim_create_autocmd('BufWritePre', {
+                pattern = '*.go',
+                callback = function()
+                    vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+                end
+            })
         end
     },
     {
         'williamboman/mason.nvim',
         cmd = "Mason",
-        config = function ()
+        config = function()
             require("mason").setup({})
         end
     },
@@ -128,8 +154,8 @@ return {
         config = function()
             require("lsp_signature").setup({})
         end,
-   },
-   {
+    },
+    {
         "glepnir/lspsaga.nvim",
         lazy = true,
         event = "LspAttach",
@@ -156,7 +182,7 @@ return {
                 symbol_in_winbar = {
                     enable = true,
                     separator = ' > ',
-                    ignore_patterns={},
+                    ignore_patterns = {},
                     hide_keyword = true,
                     show_file = true,
                     folder_level = 1,

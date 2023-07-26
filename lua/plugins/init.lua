@@ -33,14 +33,24 @@ return {
             require("indent_blankline").setup ({})
         end
     },
-    {
-        'tpope/vim-repeat',
-    },
+    -- {
+    --     'tpope/vim-repeat',
+    -- },
     {
         'folke/flash.nvim',
         event = "VeryLazy",
+        keys = {
+            { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+            { "<leader>s", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+        },
         config = function ()
-            require('flash').setup({})
+            require('flash').setup({
+                modes = {
+                    search = {
+                        enabled = false
+                    }
+                }
+            })
         end
     },
     {
@@ -54,18 +64,18 @@ return {
             -- refer to the configuration section below
         }
     },
-    {
-        "gbprod/substitute.nvim",
-        lazy = true,
-        event = "VeryLazy",
-        config = function()
-            require("substitute").setup({
-            -- your configuration comes here
-            -- or leave it empty to use the default settings
-            -- refer to the configuration section below
-            })
-        end
-    },
+    -- {
+    --     "gbprod/substitute.nvim",
+    --     lazy = true,
+    --     event = "VeryLazy",
+    --     config = function()
+    --         require("substitute").setup({
+    --         -- your configuration comes here
+    --         -- or leave it empty to use the default settings
+    --         -- refer to the configuration section below
+    --         })
+    --     end
+    -- },
     {
         "kylechui/nvim-surround",
         version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -122,6 +132,12 @@ return {
                     max_messages = 3, -- The maximum number of messages stacked at any give time
                 },
             })
+        end
+    },
+    {
+        'ethanholz/nvim-lastplace',
+        config = function()
+            require('nvim-lastplace').setup({})
         end
     }
 }

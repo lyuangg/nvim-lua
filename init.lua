@@ -19,3 +19,5 @@ require('my.my')
 require('my.snip')
 require('my.run')
 require('keymap')
+
+vim.cmd("highlight Normal guibg=NONE ctermbg=None") -- 背景透明

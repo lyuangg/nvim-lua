@@ -12,17 +12,17 @@ function Run()
         vim.cmd("MarkdownPreview")
     elseif vim.bo.filetype == 'javascript' then
         -- vim.cmd("bo 20split term://node " .. vim.fn.fnameescape(vim.fn.expand("%")))
-        vim.fn.system("node " .. vim.fn.expand("%"))
+        vim.cmd("!node " .. vim.fn.expand("%"))
     elseif vim.bo.filetype == 'php' then
         ShowCmdResultInSplit('php ' .. vim.fn.expand("%"))
         -- vim.cmd("bo 20split term://php " .. vim.fn.fnameescape(vim.fn.expand("%")))
     elseif vim.bo.filetype == 'go' then
-        vim.fn.system("go run " .. vim.fn.expand("%"))
+        vim.cmd("!go run " .. vim.fn.expand("%"))
         -- vim.cmd("bo 20split term://go run %"")
     elseif vim.bo.filetype == 'python' then
         vim.cmd("bo 20split term://python3 %")
     elseif vim.bo.filetype == 'html' then
-        vim.fn.system("open -a 'Google Chrome' " .. vim.fn.expand("%"))
+        vim.cmd("!open -a 'Google Chrome' " .. vim.fn.expand("%"))
     elseif vim.bo.filetype == 'sh' then
         -- vim.cmd("!time bash %")
         vim.cmd("bo 20split term://time bash %")

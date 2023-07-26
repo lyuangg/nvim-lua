@@ -129,3 +129,18 @@ if Enable_auto_input_switch == true then
     augroup END
     ]])
 end
+
+
+
+IsDisableDiagnostic = false
+function Toggle_diagnostic()
+    if IsDisableDiagnostic == false then
+        vim.cmd("lua vim.diagnostic.disable()")
+        vim.cmd(":Copilot disable")
+        IsDisableDiagnostic = true
+    else
+        vim.cmd("lua vim.diagnostic.enable()")
+        vim.cmd(":Copilot enable")
+        IsDisableDiagnostic = false
+    end
+end

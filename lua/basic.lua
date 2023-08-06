@@ -170,9 +170,24 @@ vim.g.VM_maps["Select Cursor Down"] = '<M-j>'
 vim.g.VM_maps["Select Cursor Up"]   = '<M-k>'
 
 -- 多次粘贴
-vim.api.nvim_set_keymap("x", "p", '"0p', { noremap = true })
+vim.api.nvim_set_keymap("x", "p", 'pgvy', { noremap = true })
 
 -- quicktype
 vim.keymap.set("v", "<leader>tt", function()
-    return " !quicktype -l go --just-types -t " .. vim.fn.input("type name: ", "T1") .. " --field-tags " .. vim.fn.input("tag name: ", "json") .. "<cr>"
+    -- return " !quicktype -l go --just-types -t " .. vim.fn.input("type name: ", "T1") .. " --field-tags " .. vim.fn.input("tag name: ", "json") .. "<cr>"
+    return "!jsonformat.php " .. vim.fn.input("type name: ", "T1") .. " "  .. vim.fn.input("tag name: ", "json") .. " " .. "<cr>"
 end, { expr = true })
+
+
+
+-- golang format
+function GoFormat()
+    local regel=vim.fn.line(".")
+    local regec=vim.fn.col(".")
+    vim.cmd("silent %!goimports")
+    vim.cmd("silent %!gofumpt")
+    vim.fn.cursor(regel, regec)
+end
+vim.cmd("silent autocmd BufWritePre *.go :lua GoFormat()")
+
+

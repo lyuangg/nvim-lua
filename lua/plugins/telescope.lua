@@ -5,6 +5,7 @@ return {
     dependencies = {
         'nvim-lua/plenary.nvim',
         'nvim-telescope/telescope-live-grep-args.nvim',
+        'smartpde/telescope-recent-files',
     },
     config = function ()
         local lga_actions = require("telescope-live-grep-args.actions")
@@ -27,11 +28,15 @@ return {
                             ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
                         },
                     }
+                },
+                recent_files = {
+                    previewer = false,
                 }
             },
 
         })
         require("telescope").load_extension("live_grep_args")
         require("telescope").load_extension("notify")
+        require("telescope").load_extension("recent_files")
     end
 }

@@ -12,7 +12,8 @@ return {
             -- 语言服务
             -- 'sumneko_lua'
             -- intelephense
-            local servers = { 'lua_ls', 'gopls', 'pyright', 'tsserver', 'html', 'eslint', 'jsonls', 'cssls', 'lemminx',
+            -- gopls
+            local servers = { 'lua_ls', 'pyright', 'tsserver', 'html', 'eslint', 'jsonls', 'cssls', 'lemminx',
                 'yamlls', 'emmet_ls', 'marksman', 'intelephense', 'volar', 'bashls' }
             require("mason-lspconfig").setup({
                 -- 确保安装，根据需要填写
@@ -40,45 +41,23 @@ return {
                 end
 
                 -- Highlight line number
-                vim.cmd [[
-                highlight! DiagnosticLineNrError guibg=#51202A guifg=#FF0000 gui=bold
-                highlight! DiagnosticLineNrWarn guibg=#51412A guifg=#FFA500 gui=bold
-                highlight! DiagnosticLineNrInfo guibg=#1E535D guifg=#00FFFF gui=bold
-                highlight! DiagnosticLineNrHint guibg=#1E205D guifg=#0000FF gui=bold
+                -- vim.cmd [[
+                -- highlight! DiagnosticLineNrError guibg=#51202A guifg=#FF0000 gui=bold
+                -- highlight! DiagnosticLineNrWarn guibg=#51412A guifg=#FFA500 gui=bold
+                -- highlight! DiagnosticLineNrInfo guibg=#1E535D guifg=#00FFFF gui=bold
+                -- highlight! DiagnosticLineNrHint guibg=#1E205D guifg=#0000FF gui=bold
 
-                sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
-                sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
-                sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
-                sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
-                ]]
+                -- sign define DiagnosticSignError text= texthl=DiagnosticSignError linehl= numhl=DiagnosticLineNrError
+                -- sign define DiagnosticSignWarn text= texthl=DiagnosticSignWarn linehl= numhl=DiagnosticLineNrWarn
+                -- sign define DiagnosticSignInfo text= texthl=DiagnosticSignInfo linehl= numhl=DiagnosticLineNrInfo
+                -- sign define DiagnosticSignHint text= texthl=DiagnosticSignHint linehl= numhl=DiagnosticLineNrHint
+                -- ]]
 
                 vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(
                     vim.lsp.handlers.hover,
                     { border = 'rounded' }
                 )
 
-                vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(
-                    vim.lsp.handlers.signature_help,
-                    { border = 'rounded' }
-                )
-
-                vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-                    vim.lsp.diagnostic.on_publish_diagnostics, {
-                        -- Enable underline, use default values
-                        underline = false,
-                        -- Enable virtual text, override spacing to 4
-                        virtual_text = {
-                            spacing = 4,
-                        },
-                        -- Use a function to dynamically turn signs off
-                        -- and on, using buffer local variables
-                        signs = function(namespace, bufnr)
-                            return vim.b[bufnr].show_signs == true
-                        end,
-                        -- Disable a feature
-                        update_in_insert = false,
-                    }
-                )
                 -- vim.diagnostic.disable()
             end
 
@@ -117,8 +96,8 @@ return {
                         --     -- unusedwrite = true,
                         --     -- useany = true,
                         -- },
-                        experimentalPostfixCompletions = true, -- 自动完成
-                        gofumpt = true,                        -- 格式化
+                        -- experimentalPostfixCompletions = true, -- 自动完成
+                        -- gofumpt = true,                        -- 格式化
                         staticcheck = true,
                         usePlaceholders = true,
                     },
@@ -127,19 +106,14 @@ return {
 
 
             -- go 文件保存时自动格式化
-            vim.api.nvim_exec([[
-            augroup fmt
-                autocmd!
-                autocmd BufWritePre *.go lua vim.lsp.buf.format()
-            augroup end
-            ]], false)
             -- imports
-            vim.api.nvim_create_autocmd('BufWritePre', {
-                pattern = '*.go',
-                callback = function()
-                    vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
-                end
-            })
+            -- vim.api.nvim_create_autocmd('BufWritePre', {
+            --     pattern = '*.go',
+            --     callback = function()
+            --         vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+            --     end
+            -- })
+
         end
     },
     {
@@ -155,44 +129,4 @@ return {
             require("lsp_signature").setup({})
         end,
     },
-    {
-        "glepnir/lspsaga.nvim",
-        lazy = true,
-        event = "LspAttach",
-        config = function()
-            require("lspsaga").setup({
-                ui = {
-                    -- This option only works in Neovim 0.9
-                    title = true,
-                    -- Border type can be single, double, rounded, solid, shadow.
-                    border = "rounded",
-                    winblend = 0,
-                    expand = "",
-                    collapse = "",
-                    code_action = "💡",
-                    incoming = " ",
-                    outgoing = " ",
-                    hover = ' ',
-                    kind = {},
-                },
-                scroll_preview = {
-                    scroll_down = "<C-f>",
-                    scroll_up = "<C-u>",
-                },
-                symbol_in_winbar = {
-                    enable = true,
-                    separator = ' > ',
-                    ignore_patterns = {},
-                    hide_keyword = true,
-                    show_file = true,
-                    folder_level = 1,
-                    respect_root = false,
-                    color_mode = false,
-                },
-            })
-        end,
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter"
-        }
-    }
 }

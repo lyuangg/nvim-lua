@@ -144,3 +144,16 @@ function Toggle_diagnostic()
         IsDisableDiagnostic = false
     end
 end
+
+IsDiableLsp = false
+function Toggle_lsp()
+    if IsDiableLsp == false then
+        vim.cmd(":LspStop")
+        vim.cmd(":autocmd! lsp_document_highlight")
+        IsDiableLsp = true
+    else
+        vim.cmd(":LspStart")
+        vim.cmd(":autocmd lsp_document_highlight")
+        IsDiableLsp = false
+    end
+end

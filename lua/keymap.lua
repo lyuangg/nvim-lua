@@ -12,6 +12,7 @@ vim.keymap.set('n', '<leader>ff', function() require'telescope.builtin'.find_fil
 -- vim.keymap.set('n', '<leader>fg', function() require'telescope.builtin'.live_grep{} end, { noremap=true, silent=true })
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 vim.keymap.set("n", "<leader>ft", ":Telescope<CR>")
+vim.keymap.set("n", "<leader><leader>", ":lua require('telescope').extensions.recent_files.pick()<CR>")
 
 
 
@@ -45,15 +46,12 @@ vim.keymap.set('n', '<leader>n', ':Startify<cr>', { noremap=true, silent=true })
 
 -- lsp 快捷键
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap=true, silent=true })
-vim.keymap.set('n', 'gD', '<cmd>Lspsaga peek_peek_definition<CR>', { noremap=true, silent=true })
-vim.keymap.set('n', 'gh', '<cmd>Lspsaga lsp_finder<CR>', { noremap=true, silent=true })
-vim.keymap.set('n', 'gr', '<cmd>Lspsaga rename<CR>', { noremap=true, silent=true })
-vim.keymap.set('n', 'K', '<cmd>Lspsaga hover_doc<CR>', { noremap=true, silent=true })
+vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap=true, silent=true })
+vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>F', vim.lsp.buf.format, { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>ln', vim.diagnostic.goto_next, { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>la', '<cmd>Lspsaga code_action<CR>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>lo', '<cmd>Lspsaga outline<CR>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap=true, silent=true })
 
 -- obsidian
 vim.keymap.set(
@@ -102,6 +100,8 @@ vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", {silent = t
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", {silent = true, noremap = true})
 
 
--- toggole diagnostic
-vim.keymap.set("n", "<leader>D", "<cmd>lua Toggle_diagnostic()<cr>", {silent = true, noremap = true})
+-- toggole lsp
+vim.keymap.set("n", "<leader>D", "<cmd>lua Toggle_lsp()<cr>", {silent = true, noremap = true})
+
+
 

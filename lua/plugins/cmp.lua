@@ -21,7 +21,7 @@ return {
             'saadparwaiz1/cmp_luasnip',
             'rafamadriz/friendly-snippets',
             'windwp/nvim-autopairs',
-            'zbirenbaum/copilot.lua',
+            -- 'zbirenbaum/copilot.lua',
         },
         config = function ()
             local lspkind = require('lspkind')
@@ -60,9 +60,10 @@ return {
                     },
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         -- nvim-cmp tab 键兼容 copilot 设置
-                        if require("copilot.suggestion").is_visible() then
-                            require("copilot.suggestion").accept()
-                        elseif cmp.visible() then
+                        -- if require("copilot.suggestion").is_visible() then
+                            -- require("copilot.suggestion").accept()
+                        -- elseif cmp.visible() then
+                        if cmp.visible() then
                             local entry = cmp.get_selected_entry()
                             if not entry then
                                 cmp.select_next_item({behavior = cmp.SelectBehavior.Select})

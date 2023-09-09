@@ -116,10 +116,10 @@ vim.api.nvim_set_keymap("n", "<Leader>w", ":w<CR>", { noremap = true, silent = t
 vim.api.nvim_set_keymap("i", "jj", "<esc>", { noremap = true, silent = true }) -- 映射jj为<esc>
 
 -- buffers
-vim.api.nvim_set_keymap("n", "<Leader>bx", ":bp<CR>:bd #<CR>", { noremap = true, silent = true }) 
-vim.api.nvim_set_keymap("n", "<Leader>bX", ":bd!<CR>", { noremap = true, silent = true }) 
+-- vim.api.nvim_set_keymap("n", "<Leader>bx", ":bp<CR>:bd #<CR>", { noremap = true, silent = true }) 
+-- vim.api.nvim_set_keymap("n", "<Leader>bX", ":bd!<CR>", { noremap = true, silent = true }) 
 vim.api.nvim_set_keymap("n", "<Leader>bb", "<C-6>", { noremap = true, silent = true }) -- 映射<Leader>bb为<C-6>
-vim.api.nvim_set_keymap("n", "<Leader>bo", ":%bd<CR>:e#<CR>:bd#<CR>", { noremap = true, silent = true }) -- 映射<Leader>bo为:%bd<CR>:e#<CR>:bd#<CR>
+-- vim.api.nvim_set_keymap("n", "<Leader>bo", ":%bd<CR>:e#<CR>:bd#<CR>", { noremap = true, silent = true }) -- 映射<Leader>bo为:%bd<CR>:e#<CR>:bd#<CR>
 vim.api.nvim_set_keymap("n", "<Leader>bn", ":ene<CR>", { noremap = true, silent = true }) -- 映射<Leader>bn为:ene<CR>
 vim.api.nvim_set_keymap("n", "<Tab>", ":bn<CR>", { noremap = true, silent = true }) -- 映射<Tab>为:bn<CR>
 vim.api.nvim_set_keymap("n", "<S-Tab>", ":bp<CR>", { noremap = true, silent = true }) -- 映射<S-Tab>为:bp<CR>
@@ -135,7 +135,17 @@ local ascii = {
     '    |_|  \\___/_/   \\_\\_| \\_|',
     '    ',
 }
-vim.g.startify_custom_header = ascii -- 设置Startify的自定义标题
+-- local ascii = {
+-- '██╗   ██╗██╗   ██╗ █████╗ ███╗   ██╗ ',
+-- '╚██╗ ██╔╝██║   ██║██╔══██╗████╗  ██║ ',
+-- ' ╚████╔╝ ██║   ██║███████║██╔██╗ ██║ ',
+-- '  ╚██╔╝  ██║   ██║██╔══██║██║╚██╗██║ ',
+-- '   ██║   ╚██████╔╝██║  ██║██║ ╚████║ ',
+-- '   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝ ',
+-- }
+
+vim.g.ascii = ascii
+vim.g.startify_custom_header = ascii
 vim.g.startify_lists = {
     { type = 'files',     header = {'   MRU'}          },
     { type = 'sessions',  header = {'   Sessions'}     },
@@ -146,7 +156,11 @@ vim.g.startify_bookmarks = { {o = '/Users/yuan/tmpfiles/t.md'}, '/Users/yuan/.zs
 vim.g.startify_files_number = 5 -- 设置Startify的文件数量
 vim.g.startify_session_autoload = 1 -- 设置Startify的自动加载会话
 vim.g.startify_session_persistence = 1 -- 设置Startify的会话持久化
-vim.g.startify_session_before_save = { 'silent! LspStop' } -- 设置Startify在保存会话之前执行的命令
+-- vim.g.startify_session_before_save = { 'silent! LspStop', 'silent! NvimTreeClose' } -- 设置Startify在保存会话之前执行的命令
+vim.g.startify_session_before_save = { 'silent! tabdo NvimTreeClose' } -- 设置Startify在保存会话之前执行的命令
+vim.g.startify_session_delete_buffers = 1
+vim.g.startify_change_to_vcs_root = 1 -- 设置目录为git根目录
+vim.g.startify_padding_left = 5 -- 设置Startify的左边距
 vim.g.startify_commands = {
     {r = {'Refresh Startify', 'Startify'}},
     {S = {'Session Save', 'SSave ' .. vim.fn.fnamemodify(vim.fn.getcwd(), ':~:t')}},
@@ -154,10 +168,12 @@ vim.g.startify_commands = {
     {c = {'Session Close', 'SClose'}},
 } -- 设置Startify的命令
 vim.cmd('autocmd User Startified setlocal cursorline') -- 设置Startify的自动命令
+-- vim.cmd('autocmd SessionLoadPost * :NvimTreeOpen') -- 设置会话加载后自动打开NvimTree
+vim.cmd('autocmd SessionLoadPost * :lua require("nvim-tree.api").tree.toggle({focus = false})') -- 设置会话加载后自动打开NvimTree
 
 -- preview markdown
-vim.g.mkdp_browser = 'min'
-vim.g.mkdp_theme = 'light'
+-- vim.g.mkdp_browser = 'min'
+-- vim.g.mkdp_theme = 'light'
 
 
 -- 插入模式下关闭相对行号
@@ -174,11 +190,13 @@ vim.api.nvim_set_keymap("x", "p", 'pgvy', { noremap = true })
 
 -- quicktype
 vim.keymap.set("v", "<leader>tt", function()
-    -- return " !quicktype -l go --just-types -t " .. vim.fn.input("type name: ", "T1") .. " --field-tags " .. vim.fn.input("tag name: ", "json") .. "<cr>"
     return "!jsonformat.php " .. vim.fn.input("type name: ", "T1") .. " "  .. vim.fn.input("tag name: ", "json") .. " " .. "<cr>"
 end, { expr = true })
 
 
+-- 禁用内置插件
+-- vim.g.loaded_netrw = 1
+-- vim.g.loaded_netrwPlugin = 1
 
 -- golang format
 function GoFormat()

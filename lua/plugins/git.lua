@@ -50,7 +50,7 @@ return {
     {
         'sindrets/diffview.nvim',
         lazy = true,
-        cmd = { "DiffviewOpen", "DiffviewClose" },
+        cmd = { "DiffviewOpen", "DiffviewClose", "DiffviewFileHistory"},
         dependencies = {
             'nvim-lua/plenary.nvim'
         },

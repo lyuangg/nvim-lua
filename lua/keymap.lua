@@ -9,6 +9,7 @@ vim.keymap.set('n', '<leader>oo', ':AerialOpen<cr>', { noremap=true, silent=true
 
 -- telescope
 vim.keymap.set('n', '<leader>ff', function() require'telescope.builtin'.find_files{} end, { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>fb', function() require'telescope.builtin'.buffers{previewer=false} end, { noremap=true, silent=true })
 -- vim.keymap.set('n', '<leader>fg', function() require'telescope.builtin'.live_grep{} end, { noremap=true, silent=true })
 vim.keymap.set("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 vim.keymap.set("n", "<leader>ft", ":Telescope<CR>")
@@ -30,22 +31,38 @@ vim.keymap.set("n", '<leader>gg', ":Neogit<cr>", {noremap= true, silent=true })
 vim.keymap.set("n", '<leader>gc', ":Neogit commit<cr>", {noremap= true, silent=true })
 
 -- buffer
-vim.keymap.set('n', '<leader>1', ':LualineBuffersJump! 1<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>2', ':LualineBuffersJump! 2<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>3', ':LualineBuffersJump! 3<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>4', ':LualineBuffersJump! 4<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>5', ':LualineBuffersJump! 5<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>6', ':LualineBuffersJump! 6<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>7', ':LualineBuffersJump! 7<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>8', ':LualineBuffersJump! 8<cr>', { noremap=true, silent=true })
-vim.keymap.set('n', '<leader>9', ':LualineBuffersJump! 9<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>1', ':LualineBuffersJump! 1<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>2', ':LualineBuffersJump! 2<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>3', ':LualineBuffersJump! 3<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>4', ':LualineBuffersJump! 4<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>5', ':LualineBuffersJump! 5<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>6', ':LualineBuffersJump! 6<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>7', ':LualineBuffersJump! 7<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>8', ':LualineBuffersJump! 8<cr>', { noremap=true, silent=true })
+-- vim.keymap.set('n', '<leader>9', ':LualineBuffersJump! 9<cr>', { noremap=true, silent=true })
 
+vim.keymap.set('n', '<leader>1', ':BufferLineGoToBuffer 1<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>2', ':BufferLineGoToBuffer 2<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>3', ':BufferLineGoToBuffer 3<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>4', ':BufferLineGoToBuffer 4<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>5', ':BufferLineGoToBuffer 5<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>6', ':BufferLineGoToBuffer 6<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>7', ':BufferLineGoToBuffer 7<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>8', ':BufferLineGoToBuffer 8<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>9', ':BufferLineGoToBuffer 9<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>$', ':BufferLineGoToBuffer -1<cr>', { noremap=true, silent=true })
+
+vim.keymap.set('n', '<leader>br', ':BufferLineCloseRight<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>bl', ':BufferLineCloseLeft<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>bo', ':BufferLineCloseOthers<cr>', { noremap=true, silent=true })
+vim.keymap.set('n', '<leader>bp', ':BufferLinePick<cr>', { noremap=true, silent=true })
 
 -- startify
 vim.keymap.set('n', '<leader>n', ':Startify<cr>', { noremap=true, silent=true })
 
 -- lsp 快捷键
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { noremap=true, silent=true })
+vim.keymap.set('n', 'gD', ':rightbelow vsplit | lua vim.lsp.buf.definition()<CR>', { noremap=true, silent=true })
 vim.keymap.set('n', 'gr', '<cmd>lua vim.lsp.buf.rename()<CR>', { noremap=true, silent=true })
 vim.keymap.set('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', { noremap=true, silent=true })
 vim.keymap.set('n', '<leader>F', vim.lsp.buf.format, { noremap=true, silent=true })
@@ -54,18 +71,18 @@ vim.keymap.set('n', '<leader>lp', vim.diagnostic.goto_prev, { noremap=true, sile
 vim.keymap.set('n', '<leader>la', '<cmd>lua vim.lsp.buf.code_action()<CR>', { noremap=true, silent=true })
 
 -- obsidian
-vim.keymap.set(
-  "n",
-  "gf",
-  function()
-    if require('obsidian').util.cursor_on_markdown_link() then
-      return "<cmd>ObsidianFollowLink<CR>"
-    else
-      return "<cmd>lua Open_file('n')<CR>"
-    end
-  end,
-  { noremap = false, expr = true}
-)
+-- vim.keymap.set(
+--   "n",
+--   "gf",
+--   function()
+--     if require('obsidian').util.cursor_on_markdown_link() then
+--       return "<cmd>ObsidianFollowLink<CR>"
+--     else
+--       return "<cmd>lua Open_file('n')<CR>"
+--     end
+--   end,
+--   { noremap = false, expr = true}
+-- )
 vim.keymap.set("n", "<leader>of", ":ObsidianQuickSwitch<cr>", {noremap= true, silent=true })
 vim.keymap.set("n", "<leader>ob", ":ObsidianOpen<cr>", {noremap= true, silent=true })
 
@@ -98,10 +115,12 @@ vim.keymap.set("n", "<leader>xd", "<cmd>TroubleToggle document_diagnostics<cr>",
 vim.keymap.set("n", "<leader>xl", "<cmd>TroubleToggle loclist<cr>", {silent = true, noremap = true})
 vim.keymap.set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", {silent = true, noremap = true})
 vim.keymap.set("n", "gR", "<cmd>TroubleToggle lsp_references<cr>", {silent = true, noremap = true})
+vim.keymap.set("n", "gI", "<cmd>TroubleToggle lsp_implementations<CR>", {silent = true, noremap = true})
 
 
 -- toggole lsp
 vim.keymap.set("n", "<leader>D", "<cmd>lua Toggle_lsp()<cr>", {silent = true, noremap = true})
+vim.keymap.set("n", "<leader>R", ":LspRestart<CR>", {silent = true, noremap = true})
 
 
 

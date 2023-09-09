@@ -30,7 +30,13 @@ return {
         lazy = true,
         event = "BufReadPost",
         config = function ()
-            require("indent_blankline").setup ({})
+            vim.cmd([[highlight IndentBlanklineContextChar guifg=#88a2bc gui=nocombine]])
+            require("indent_blankline").setup ({
+                -- char = '▏',
+                space_char_blankline = " ",
+                show_current_context = true,
+                -- show_current_context_start = true,
+            })
         end
     },
     -- {

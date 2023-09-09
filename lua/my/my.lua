@@ -157,3 +157,66 @@ function Toggle_lsp()
         IsDiableLsp = false
     end
 end
+
+-- 删除其他 buffers
+-- function DelOtherBuffers()
+--     local current_bufnr = vim.fn.bufnr("%")
+--     local buflist=vim.api.nvim_list_bufs()
+--     for _, bufnr in ipairs(buflist) do
+--         local bname = vim.api.nvim_buf_get_name(bufnr)
+--         if bname ~= '' and bufnr ~= current_bufnr and string.find(bname, "NvimTree") == nil then
+--             vim.api.nvim_buf_delete(bufnr, { force = true })
+--         end
+--     end
+-- end
+-- vim.api.nvim_set_keymap("n", "<Leader>bo", ":silent lua DelOtherBuffers()<CR>", { noremap = true, silent = true })
+
+
+-- function DelRightBuffers()
+--     local current_bufnr = vim.fn.bufnr("%")
+--     local endNum = vim.fn.bufnr("$")
+--     for i = current_bufnr, endNum do
+--         if i > current_bufnr and vim.api.nvim_buf_is_loaded(i) then
+--             local bname = vim.api.nvim_buf_get_name(i)
+--             if bname ~= '' and i ~= current_bufnr and string.find(bname, "NvimTree") == nil then
+--                 vim.api.nvim_buf_delete(i, { force = true })
+--             end
+--         end
+--     end
+-- end
+-- vim.api.nvim_set_keymap("n", "<Leader>br", ":lua DelRightBuffers()<CR>", { noremap = true, silent = true })
+
+-- function DelLeftBuffers()
+--     local current_bufnr = vim.fn.bufnr("%")
+--     -- local endNum = vim.fn.bufnr("$")
+--     for i = 1, current_bufnr do
+--         if i < current_bufnr and vim.api.nvim_buf_is_loaded(i) then
+--             local bname = vim.api.nvim_buf_get_name(i)
+--             if bname ~= '' and i ~= current_bufnr and string.find(bname, "NvimTree") == nil then
+--                 vim.api.nvim_buf_delete(i, { force = true })
+--             end
+--         end
+--     end
+-- end
+-- vim.api.nvim_set_keymap("n", "<Leader>bl", ":lua DelLeftBuffers()<CR>", { noremap = true, silent = true })
+
+function DelCurrentBuffer(isForce)
+    local current_bufnr = vim.fn.bufnr("%")
+    if vim.api.nvim_buf_get_option(current_bufnr, "modified") and isForce == false then
+        return
+    end
+    vim.cmd("silent! bp")
+    local current_bufnr2 = vim.fn.bufnr("%")
+    if current_bufnr == current_bufnr2 then
+        if isForce then
+            vim.cmd("silent! q!")
+        else
+            vim.cmd("silent! q")
+        end
+    else
+        vim.api.nvim_buf_delete(current_bufnr, { force = isForce })
+    end
+end
+vim.api.nvim_set_keymap("n", "<Leader>bx", ":silent lua DelCurrentBuffer(false)<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<Leader>bX", ":silent lua DelCurrentBuffer(true)<CR>", { noremap = true, silent = true })
+

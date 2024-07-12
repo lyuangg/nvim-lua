@@ -1,15 +1,23 @@
 return {
     'epwalsh/obsidian.nvim',
+    version = "*", -- recommended, use latest release instead of latest commit
     lazy = true,
-    event = { "BufReadPre /Users/yuan/Library/Mobile Documents/iCloud~md~obsidian/Documents/yuan/**.md" },
-    config = function ()
-        require("obsidian").setup({
-            dir = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/yuan",
-            open_app_foreground = true,
-            completion = {
-                nvim_cmp = true, -- if using nvim-cmp, otherwise set to false
+    ft = "markdown",
+    dependencies = {
+        -- Required.
+        "nvim-lua/plenary.nvim",
+        -- see below for full list of optional dependencies 👇
+    },
+    opts = {
+        workspaces = {
+            {
+                name = "yuan",
+                path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/yuan",
             },
-            disable_frontmatter = true
-        })
-    end
+        },
+        ui = {
+            enable = false,
+        },
+        -- see below for full list of options 👇
+    },
 }

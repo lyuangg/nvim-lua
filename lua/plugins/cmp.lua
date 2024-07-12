@@ -3,7 +3,7 @@ return {
         'windwp/nvim-autopairs',
         lazy = true,
         event = "InsertEnter",
-        config = function ()
+        config = function()
             require('nvim-autopairs').setup({})
         end
     },
@@ -21,9 +21,9 @@ return {
             'saadparwaiz1/cmp_luasnip',
             'rafamadriz/friendly-snippets',
             'windwp/nvim-autopairs',
-            -- 'zbirenbaum/copilot.lua',
+            'quangnguyen30192/cmp-nvim-tags',
         },
-        config = function ()
+        config = function()
             local lspkind = require('lspkind')
             local luasnip = require 'luasnip'
 
@@ -33,7 +33,8 @@ return {
             local has_words_before = function()
                 unpack = unpack or table.unpack
                 local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-                return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
+                return col ~= 0 and
+                    vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
             end
 
             local cmp = require 'cmp'
@@ -59,14 +60,10 @@ return {
                         select = true,
                     },
                     ["<Tab>"] = cmp.mapping(function(fallback)
-                        -- nvim-cmp tab 键兼容 copilot 设置
-                        -- if require("copilot.suggestion").is_visible() then
-                            -- require("copilot.suggestion").accept()
-                        -- elseif cmp.visible() then
                         if cmp.visible() then
                             local entry = cmp.get_selected_entry()
                             if not entry then
-                                cmp.select_next_item({behavior = cmp.SelectBehavior.Select})
+                                cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
                             end
                             cmp.confirm()
                         elseif luasnip.expand_or_jumpable() then
@@ -80,8 +77,8 @@ return {
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
                         if cmp.visible() then
                             cmp.select_prev_item()
-                        elseif luasnip.jumpable( -1) then
-                            luasnip.jump( -1)
+                        elseif luasnip.jumpable(-1) then
+                            luasnip.jump(-1)
                         else
                             fallback()
                         end
@@ -94,6 +91,8 @@ return {
                     { name = "buffer" },
                     { name = 'path' },
                     { name = 'calc' },
+                    { name = 'vim-dadbod-completion' },
+                    { name = 'tags' },
                 }),
 
                 window = {
@@ -103,8 +102,8 @@ return {
 
                 formatting = {
                     format = lspkind.cmp_format({
-                        mode = 'symbol_text', -- show only symbol annotations
-                        maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+                        mode = 'symbol_text',  -- show only symbol annotations
+                        maxwidth = 50,         -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
                         ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
 
                         -- The function below will be called before any actual modifications from lspkind
@@ -124,7 +123,8 @@ return {
                                     path = "[Path]",
                                     spell = "[Spell]",
                                     calc = "[Calc]",
-                                    emoji = "[Emoji]"
+                                    emoji = "[Emoji]",
+                                    ['vim-dadbod-completion'] = "[DB]",
                                 })[entry.source.name]
                             return vim_item
                         end

@@ -14,7 +14,7 @@ return {
             -- intelephense
             -- gopls
             local servers = { 'lua_ls', 'pyright', 'tsserver', 'html', 'eslint', 'jsonls', 'cssls', 'lemminx',
-                'yamlls', 'emmet_ls', 'marksman', 'intelephense', 'volar', 'bashls' }
+                'yamlls', 'emmet_ls', 'marksman', 'intelephense', 'volar', 'bashls', }
             require("mason-lspconfig").setup({
                 -- 确保安装，根据需要填写
                 ensure_installed = {}
@@ -45,15 +45,28 @@ return {
                     { border = 'rounded' }
                 )
 
+                -- codelens
+                if client.supports_method("textDocument/codeLens", { bufnr = bufnr }) then
+                    vim.lsp.codelens.refresh({ bufnr = bufnr })
+                    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
+                        buffer = bufnr,
+                        callback = function()
+                            vim.lsp.codelens.refresh({ bufnr = bufnr })
+                        end,
+                    })
+                end
+
                 -- icon
                 local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = " ", Info = " " }
-                    for type, icon in pairs(signs) do
+                for type, icon in pairs(signs) do
                     local hl = "DiagnosticSign" .. type
                     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
                 end
 
                 -- vim.diagnostic.disable()
             end
+
+            vim.lsp.inlay_hint.enable()
 
             for _, lsp in ipairs(servers) do
                 lspconfig[lsp].setup {
@@ -62,6 +75,7 @@ return {
                 }
             end
 
+            -- require('neodev').setup({})
             require('lspconfig').lua_ls.setup {
                 on_attach = on_attach,
                 capabilities = capabilities,
@@ -69,6 +83,9 @@ return {
                     Lua = {
                         diagnostics = {
                             globals = { 'vim' }
+                        },
+                        completion = {
+                            callSnippet = "Replace"
                         }
                     }
                 }
@@ -91,11 +108,33 @@ return {
                         --     -- useany = true,
                         -- },
                         -- experimentalPostfixCompletions = true, -- 自动完成
-                        gofumpt = true,                        -- 格式化
+                        gofumpt = true, -- 格式化
                         staticcheck = true,
                         usePlaceholders = true,
+                        -- codelenses = {
+                        -- test = true,
+                        -- generate = true,
+                        -- gc_details = true,
+                        -- regenerate_cgo = false,
+                        -- tidy = true,
+                        -- upgrade_dependency = true,
+                        -- vendor = true,
+                        -- },
+                        hints = {
+                            -- assignVariableTypes = true,
+                            -- compositeLiteralFields = true,
+                            -- compositeLiteralTypes = true,
+                            constantValues = true,
+                            -- functionTypeParameters = true,
+                            -- parameterNames = true,
+                            rangeVariableTypes = true,
+                        },
                     },
                 },
+            }
+
+            require('lspconfig').emmet_ls.setup {
+                filetypes = { "javascript", "astro", "css", "eruby", "html", "htmldjango", "javascriptreact", "less", "pug", "sass", "scss", "svelte", "typescriptreact", "vue" },
             }
         end
     },
@@ -111,5 +150,11 @@ return {
         config = function()
             require("lsp_signature").setup({})
         end,
+    },
+    {
+        "danymat/neogen",
+        config = true,
+        -- Uncomment next line if you want to follow only stable versions
+        -- version = "*"
     },
 }

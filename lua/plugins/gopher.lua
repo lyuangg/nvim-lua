@@ -1,6 +1,6 @@
 return {
     'olexsmir/gopher.nvim',
-    cmd = { 'GoTagAdd', 'GoTagRm', 'GoMod', 'GoImpl', 'GoCmt', 'GoGet'},
+    cmd = { 'GoTagAdd', 'GoTagRm', 'GoMod', 'GoImpl', 'GoCmt', 'GoGet', 'GoTestAdd', 'GoTestsAll', 'GoTestsExp', 'GoGenerate', 'GoIfErr', 'GoInstallDeps'},
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
